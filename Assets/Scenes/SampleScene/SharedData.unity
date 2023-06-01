@@ -258,7 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92987d6ed24161d4f867c62371059fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cube: {fileID: 5391224263545274528, guid: 8bdaebf0b31ee3c4b861369d2d632457, type: 3}
+  Items:
+  - {fileID: 4781464893353257486, guid: 755de76042c02fc49bc4535d36e39711, type: 3}
 --- !u!4 &1844694902
 Transform:
   m_ObjectHideFlags: 0
