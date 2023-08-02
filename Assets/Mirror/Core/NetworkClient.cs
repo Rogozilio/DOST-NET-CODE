@@ -580,11 +580,11 @@ namespace Mirror
                 return;
             }
 
-            if (identity.assetId != 0 && identity.assetId != newAssetId)
-            {
-                Debug.LogError($"Could not register '{prefab.name}' to {newAssetId} because it already had an AssetId, Existing assetId {identity.assetId}");
-                return;
-            }
+            // if (identity.assetId != 0 && identity.assetId != newAssetId)
+            // {
+            //     Debug.LogError($"Could not register '{prefab.name}' to {newAssetId} because it already had an AssetId, Existing assetId {identity.assetId}");
+            //     return;
+            // }
 
             identity.assetId = newAssetId;
 

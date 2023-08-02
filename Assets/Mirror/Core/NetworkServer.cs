@@ -1322,13 +1322,14 @@ namespace Mirror
 
         /// <summary>Spawns an object and also assigns Client Authority to the specified client.</summary>
         // This is the same as calling NetworkIdentity.AssignClientAuthority on the spawned object.
-        public static void Spawn(GameObject obj, uint assetId, NetworkConnection ownerConnection = null)
+        public static GameObject Spawn(GameObject obj, uint assetId, NetworkConnection ownerConnection = null)
         {
             if (GetNetworkIdentity(obj, out NetworkIdentity identity))
             {
                 identity.assetId = assetId;
             }
             SpawnObject(obj, ownerConnection);
+            return obj;
         }
 
         static void SpawnObject(GameObject obj, NetworkConnection ownerConnection)

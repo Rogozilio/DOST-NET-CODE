@@ -1,16 +1,37 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class NetworkManagerTest : NetworkManager
 {
-    public GameObject playerEmpty;
-    
+    public GameObject playerOnline;
+    public GameObject playerGhost;
+
     private DebugAuthority _debugAuthority;
+
     public override void Awake()
     {
         _debugAuthority = FindObjectOfType<DebugAuthority>();
+    }
+
+    public override void Start()
+    {
+        NetworkClient.UnregisterPrefab(playerPrefab);
+        NetworkClient.RegisterPrefab(playerPrefab, SpawnPlayer, obj => Destroy(obj));
+        base.Start();
+    }
+
+    private GameObject SpawnPlayer(SpawnMessage msg)
+    {
+        return Instantiate(msg.isLocalPlayer ? playerOnline : playerGhost, msg.position, msg.rotation);
+    }
+
+    private void OnDestroy()
+    {
+        NetworkClient.UnregisterSpawnHandler(1);
     }
 
     public override void OnServerSceneChanged(string sceneName)
@@ -29,9 +50,10 @@ public class NetworkManagerTest : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        GameObject player = Instantiate(playerEmpty, startPositions[numPlayers].position,
-            startPositions[numPlayers].rotation);
-        NetworkServer.AddPlayerForConnection(conn, player, playerPrefab.GetComponent<NetworkIdentity>().assetId);
+        GameObject player = Instantiate(NetworkServer.activeHost ? playerOnline : playerGhost,
+            startPositions[numPlayers].position, startPositions[numPlayers].rotation);
+
+        NetworkServer.AddPlayerForConnection(conn, player, playerGhost.GetComponent<NetworkIdentity>().assetId);
 
         if (_debugAuthority)
         {

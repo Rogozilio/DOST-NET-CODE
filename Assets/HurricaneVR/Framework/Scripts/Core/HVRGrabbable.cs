@@ -20,6 +20,8 @@ namespace HurricaneVR.Framework.Core
 
     public class HVRGrabbable : MonoBehaviour
     {
+        
+        
         #region Fields
 
         internal const int TrackedVelocityCount = 10;

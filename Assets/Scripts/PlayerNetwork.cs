@@ -1,122 +1,91 @@
-using System;
-using System.Collections.Generic;
-using HurricaneVR.Framework.ControllerInput;
 using HurricaneVR.Framework.Core;
 using HurricaneVR.Framework.Core.Grabbers;
-using HurricaneVR.Framework.Core.HandPoser;
 using HurricaneVR.Framework.Core.Player;
+using HurricaneVR.Framework.Shared;
 using Mirror;
+using NetworkAPI;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerNetwork : NetworkBehaviour
 {
     public GameObject headModel;
+    [Space] public NetworkAuthority networkAuthority;
+    public NetworkTakeAndDrop networkTakeAndDrop;
+    public NetworkSendTransform sendTransformItemForceGrab;
 
-    private NetworkIdentity _networkIdentity;
     private HVRManager _hvrManager;
 
-    private Dictionary<int, HVRHandPoser> _handPoses;
+    private HVRHandGrabber _leftHand;
+    private HVRHandGrabber _rightHand;
+    private HVRForceGrabber _leftForceHand;
+    private HVRForceGrabber _rightForceHand;
 
     private void Awake()
     {
-        _networkIdentity = GetComponent<NetworkIdentity>();
+        headModel.layer = LayerMask.NameToLayer("HideForPlayer");
+        networkAuthority.networkIdentity = GetComponent<NetworkIdentity>();
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        _leftHand = networkTakeAndDrop.leftHandRigidbody.GetComponent<HVRHandGrabberNetwork>();
+        _rightHand = networkTakeAndDrop.rightHandRigidbody.GetComponent<HVRHandGrabberNetwork>();
+        _leftForceHand = networkTakeAndDrop.leftHandRigidbody.GetComponentInChildren<HVRForceGrabber>();
+        _rightForceHand = networkTakeAndDrop.rightHandRigidbody.GetComponentInChildren<HVRForceGrabber>();
+
         _hvrManager = FindObjectOfType<HVRManager>();
 
         _hvrManager.PlayerController ??= GetComponentInChildren<HVRPlayerController>();
+
+        _leftForceHand.Grabbed.AddListener(networkAuthority.SetAuthority);
+        _leftForceHand.Grabbed.AddListener(networkTakeAndDrop.ForceGrabObject);
+
+        _leftHand.Grabbed.AddListener(networkAuthority.SetAuthority);
+        _leftHand.Grabbed.AddListener(networkTakeAndDrop.TakeObject);
+        _leftHand.Released.AddListener(networkTakeAndDrop.DropObject);
+
+        _rightForceHand.Grabbed.AddListener(networkAuthority.SetAuthority);
+        _rightForceHand.Grabbed.AddListener(networkTakeAndDrop.ForceGrabObject);
+
+        _rightHand.Grabbed.AddListener(networkAuthority.SetAuthority);
+        _rightHand.Grabbed.AddListener(networkTakeAndDrop.TakeObject);
+        _rightHand.Released.AddListener(networkTakeAndDrop.DropObject);
     }
 
-    public override void OnStartClient()
+    private void Update()
     {
-        var input = GetComponentInChildren<HVRPlayerInputs>();
-        if (input)
-            input.enabled = isLocalPlayer;
-        GetComponentInChildren<Camera>().enabled = isLocalPlayer;
-        var audioListener = GetComponentInChildren<AudioListener>();
-        if (audioListener)
-            audioListener.enabled = isLocalPlayer;
-        var tracPoseDriver = GetComponentInChildren<UnityEngine.SpatialTracking.TrackedPoseDriver>();
-        if (tracPoseDriver)
-            tracPoseDriver.enabled = isLocalPlayer;
-        headModel.layer = LayerMask.NameToLayer("HideForPlayer");
-
-        foreach (var trackedPoseDriver in GetComponentsInChildren<TrackedPoseDriver>())
-        {
-            trackedPoseDriver.enabled = isLocalPlayer;
-        }
-
-        // foreach (var handAnimator in GetComponentsInChildren<HVRHandAnimator>())
-        // {
-        //     handAnimator.enabled = isLocalPlayer;
-        // }
-
-        _handPoses = new Dictionary<int, HVRHandPoser>();
-        var poses = FindObjectsOfType<HVRHandPoser>();
-
-        for (var i = 0; i < poses.Length; i++)
-        {
-            _handPoses.Add(i, poses[i]);
-        }
+        if (isServer) return;
+        
+        if (networkTakeAndDrop.IsForceLeftHand)
+            sendTransformItemForceGrab.Send(networkAuthority.netId, networkTakeAndDrop.GetItemInLeftHand,
+                networkTakeAndDrop.GetItemInLeftHand.transform.position,
+                networkTakeAndDrop.GetItemInLeftHand.transform.rotation);
+        
+        if (networkTakeAndDrop.IsForceRightHand)
+            sendTransformItemForceGrab.Send(networkAuthority.netId, networkTakeAndDrop.GetItemInRightHand,
+                networkTakeAndDrop.GetItemInRightHand.transform.position,
+                networkTakeAndDrop.GetItemInRightHand.transform.rotation);
     }
 
-    public void SetAuthority(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
+    public override void OnStopLocalPlayer()
     {
-        var networkIdentity = grabbable.GetComponent<NetworkIdentity>();
+        _leftForceHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
+        _leftForceHand.Grabbed.RemoveListener(networkTakeAndDrop.ForceGrabObject);
+        
+        _leftHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
+        _leftHand.Grabbed.RemoveListener(networkTakeAndDrop.TakeObject);
+        _leftHand.Released.RemoveListener(networkTakeAndDrop.DropObject);
 
-        if (networkIdentity.isClient)
-        {
-            CmdRemoveAuthority(networkIdentity);
-            CmdSetAuthority(networkIdentity);
-        }
-        else
-        {
-            ServerRemoveAuthority(networkIdentity);
-            ServerSetAuthority(networkIdentity);
-        }
-    }
-
-    public void RemoveAuthorityForFullReleased(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
-    {
-        if (grabbable.IsLeftHandGrabbed && grabbable.IsRightHandGrabbed) return;
-
-        RemoveAuthority(grabberBase, grabbable);
-    }
-
-    public void RemoveAuthority(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
-    {
-        var networkIdentity = grabbable.GetComponent<NetworkIdentity>();
-        if (networkIdentity.isClient)
-            CmdRemoveAuthority(networkIdentity);
-        else
-            ServerRemoveAuthority(networkIdentity);
+        _rightForceHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
+        _rightForceHand.Grabbed.RemoveListener(networkTakeAndDrop.ForceGrabObject);
+        
+        _rightHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
+        _rightHand.Grabbed.RemoveListener(networkTakeAndDrop.TakeObject);
+        _rightHand.Released.RemoveListener(networkTakeAndDrop.DropObject);
     }
 
     public void TestDebug(string value)
     {
         Debug.Log(value);
-    }
-
-    [Command]
-    void CmdSetAuthority(NetworkIdentity grabID)
-    {
-        grabID.AssignClientAuthority(_networkIdentity.connectionToClient);
-    }
-
-    [Command]
-    void CmdRemoveAuthority(NetworkIdentity grabID)
-    {
-        grabID.RemoveClientAuthority();
-    }
-
-    [Server]
-    void ServerSetAuthority(NetworkIdentity grabID)
-    {
-        grabID.AssignClientAuthority(_networkIdentity.connectionToClient);
-    }
-
-    [Server]
-    void ServerRemoveAuthority(NetworkIdentity grabID)
-    {
-        grabID.RemoveClientAuthority();
     }
 }
