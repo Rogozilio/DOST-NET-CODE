@@ -45,7 +45,7 @@ namespace NetworkAPI
             }
             else
             {
-                _isForceLeftHand = true;
+                _isForceRightHand = true;
                 _itemInRightHand = grabbable.gameObject;
             }
         }
@@ -53,21 +53,19 @@ namespace NetworkAPI
         [Client]
         public void TakeObject(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
         {
-            var isLeftHand = IsLeftHand(grabberBase);
-            if (isLeftHand)
+            if (IsLeftHand(grabberBase))
             {
                 _isForceLeftHand = false;
                 _itemInLeftHand = grabbable.gameObject;
             }
             else
             {
-                _isForceLeftHand = false;
+                _isForceRightHand = false;
                 _itemInRightHand = grabbable.gameObject;
             }
 
-            if (DropObjectPastOwner(grabberBase, grabbable)) { Debug.Log("DropPastObject"); return; }
-
-            Debug.Log("TakeObject");
+            if (DropObjectPastOwner(grabberBase, grabbable)) { return; }
+            
             StartCoroutine(DelayTakeObject(grabberBase, grabbable, 0.1f));
         }
 
@@ -188,13 +186,17 @@ namespace NetworkAPI
             RemoveJoint(isLeftHand, item);
             
             var player = GameObject.FindGameObjectWithTag("Player");
+            if (!player)
+            {
+                Debug.LogError(name + " must have a tag 'Player'");
+                return;
+            }
 
             foreach (var handGrabber in player.GetComponentsInChildren<HVRHandGrabberNetwork>())
             {
                 if (handGrabber.HandSide == HVRHandSide.Left && isLeftHand && handGrabber.IsWaitDrop ||
                     handGrabber.HandSide == HVRHandSide.Right && !isLeftHand)
                 {
-                    Debug.Log("Drop -> Take");
                     handGrabber.TryGrab(item.GetComponent<HVRGrabbable>());
                 }
             }
@@ -236,7 +238,6 @@ namespace NetworkAPI
                 if (handGrabber.HandSide == HVRHandSide.Left && isLeftHand ||
                     handGrabber.HandSide == HVRHandSide.Right && !isLeftHand)
                 {
-                    Debug.Log(name + " DropObjectPastOwner " + item.name);
                     handGrabber.ForceRelease();
                 }
             }
@@ -249,7 +250,6 @@ namespace NetworkAPI
                 if (isLeftHand == joint.isLeftHand)
                 {
                     DestroyImmediate(joint);
-                    Debug.Log(name + " Drop " + item.name);
                 }
             }
         }

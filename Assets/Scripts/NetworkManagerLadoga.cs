@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class NetworkManagerTest : NetworkManager
+public class NetworkManagerLadoga : NetworkManager
 {
     public GameObject playerOnline;
     public GameObject playerGhost;
@@ -29,8 +26,9 @@ public class NetworkManagerTest : NetworkManager
         return Instantiate(msg.isLocalPlayer ? playerOnline : playerGhost, msg.position, msg.rotation);
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         NetworkClient.UnregisterSpawnHandler(1);
     }
 

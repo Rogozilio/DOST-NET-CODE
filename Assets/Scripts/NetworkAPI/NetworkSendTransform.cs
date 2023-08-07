@@ -47,9 +47,11 @@ namespace NetworkAPI
             SendTransformFromClientToServer(target, position, rotation, scale);
         }
         
-        [Command]
+        [Server]
         private void SendFromServerToClients(uint clientId, GameObject target)
         {
+            if(!isServer) return;
+            
             if (sendEveryoneExceptMe)
             {
                 SendTransformFromServerToClient(clientId, target, target.transform.position,

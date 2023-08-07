@@ -1,15 +1,13 @@
 using HurricaneVR.Framework.Core;
 using HurricaneVR.Framework.Core.Grabbers;
 using HurricaneVR.Framework.Core.Player;
-using HurricaneVR.Framework.Shared;
 using Mirror;
 using NetworkAPI;
 using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour
 {
-    public GameObject headModel;
-    [Space] public NetworkAuthority networkAuthority;
+    public NetworkAuthority networkAuthority;
     public NetworkTakeAndDrop networkTakeAndDrop;
     public NetworkSendTransform sendTransformItemForceGrab;
 
@@ -22,7 +20,6 @@ public class PlayerNetwork : NetworkBehaviour
 
     private void Awake()
     {
-        headModel.layer = LayerMask.NameToLayer("HideForPlayer");
         networkAuthority.networkIdentity = GetComponent<NetworkIdentity>();
     }
 
@@ -57,12 +54,12 @@ public class PlayerNetwork : NetworkBehaviour
         if (isServer) return;
         
         if (networkTakeAndDrop.IsForceLeftHand)
-            sendTransformItemForceGrab.Send(networkAuthority.netId, networkTakeAndDrop.GetItemInLeftHand,
+            sendTransformItemForceGrab.Send(networkAuthority.NetId, networkTakeAndDrop.GetItemInLeftHand,
                 networkTakeAndDrop.GetItemInLeftHand.transform.position,
                 networkTakeAndDrop.GetItemInLeftHand.transform.rotation);
         
         if (networkTakeAndDrop.IsForceRightHand)
-            sendTransformItemForceGrab.Send(networkAuthority.netId, networkTakeAndDrop.GetItemInRightHand,
+            sendTransformItemForceGrab.Send(networkAuthority.NetId, networkTakeAndDrop.GetItemInRightHand,
                 networkTakeAndDrop.GetItemInRightHand.transform.position,
                 networkTakeAndDrop.GetItemInRightHand.transform.rotation);
     }

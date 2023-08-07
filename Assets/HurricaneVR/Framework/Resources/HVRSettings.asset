@@ -24,7 +24,7 @@ MonoBehaviour:
     type: 3}
   RightHand: {fileID: 5317784970213213621, guid: 08a9044b5c065044ab67f546bf6b04e9,
     type: 3}
-  InverseKinematics: 1
+  InverseKinematics: 0
   IKHandMirroring: 1
   FullBody: {fileID: 4893218732980657421, guid: 17c35486c819395458e3f8c72c11c1ef,
     type: 3}

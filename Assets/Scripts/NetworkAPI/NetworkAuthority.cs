@@ -15,7 +15,7 @@ namespace NetworkAPI
             get => _networkIdentity;
         }
 
-        public uint netId => _networkIdentity.netId;
+        public uint NetId => _networkIdentity.netId;
         public void SetAuthority(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
         {
             var networkIdentity = grabbable.GetComponent<NetworkIdentity>();
