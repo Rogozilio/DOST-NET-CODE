@@ -34,7 +34,7 @@ namespace NetworkAPI
 
         public void RemoveAuthorityForFullReleased(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
         {
-            if (grabbable.IsLeftHandGrabbed && grabbable.IsRightHandGrabbed) return;
+            if (grabbable.IsLeftHandGrabbed || grabbable.IsRightHandGrabbed) return;
 
             RemoveAuthority(grabberBase, grabbable);
         }

@@ -208,6 +208,7 @@ namespace NetworkAPI
             foreach (var jointWithHand in grabbable.GetComponents<ConfigurableJointWithHand>())
             {
                 var pastOwnerPlayer = jointWithHand.joint.connectedBody.transform.parent.parent;
+                if(!pastOwnerPlayer) break;
                 var netIdPastOwner = pastOwnerPlayer.GetComponent<NetworkIdentity>().netId;
                 CmdDropObjectPastOwner(netIdPastOwner, isLeftHand, grabbable.gameObject);
                 return true;
