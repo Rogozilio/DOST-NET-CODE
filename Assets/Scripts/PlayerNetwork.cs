@@ -36,14 +36,14 @@ public class PlayerNetwork : NetworkBehaviour
 
         _leftForceHand.Grabbed.AddListener(networkAuthority.SetAuthority);
         _leftForceHand.Grabbed.AddListener(networkTakeAndDrop.ForceGrabObject);
-
+        
         _leftHand.Grabbed.AddListener(networkAuthority.SetAuthority);
         _leftHand.Grabbed.AddListener(networkTakeAndDrop.TakeObject);
         _leftHand.Released.AddListener(networkTakeAndDrop.DropObject);
-
+        
         _rightForceHand.Grabbed.AddListener(networkAuthority.SetAuthority);
         _rightForceHand.Grabbed.AddListener(networkTakeAndDrop.ForceGrabObject);
-
+        
         _rightHand.Grabbed.AddListener(networkAuthority.SetAuthority);
         _rightHand.Grabbed.AddListener(networkTakeAndDrop.TakeObject);
         _rightHand.Released.AddListener(networkTakeAndDrop.DropObject);
@@ -51,31 +51,32 @@ public class PlayerNetwork : NetworkBehaviour
 
     private void Update()
     {
-        if (isServer) return;
+        if(isServer) return;
         
         if (networkTakeAndDrop.IsForceLeftHand)
-            sendTransformItemForceGrab.Send(networkAuthority.NetId, networkTakeAndDrop.GetItemInLeftHand,
-                networkTakeAndDrop.GetItemInLeftHand.transform.position,
-                networkTakeAndDrop.GetItemInLeftHand.transform.rotation);
-        
+        {
+            sendTransformItemForceGrab.target = networkTakeAndDrop.GetItemInLeftHand;
+            sendTransformItemForceGrab.Send();
+        }
         if (networkTakeAndDrop.IsForceRightHand)
-            sendTransformItemForceGrab.Send(networkAuthority.NetId, networkTakeAndDrop.GetItemInRightHand,
-                networkTakeAndDrop.GetItemInRightHand.transform.position,
-                networkTakeAndDrop.GetItemInRightHand.transform.rotation);
+        {
+            sendTransformItemForceGrab.target = networkTakeAndDrop.GetItemInRightHand;
+            sendTransformItemForceGrab.Send();
+        }
     }
 
     public override void OnStopLocalPlayer()
     {
         _leftForceHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
         _leftForceHand.Grabbed.RemoveListener(networkTakeAndDrop.ForceGrabObject);
-        
+
         _leftHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
         _leftHand.Grabbed.RemoveListener(networkTakeAndDrop.TakeObject);
         _leftHand.Released.RemoveListener(networkTakeAndDrop.DropObject);
 
         _rightForceHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
         _rightForceHand.Grabbed.RemoveListener(networkTakeAndDrop.ForceGrabObject);
-        
+
         _rightHand.Grabbed.RemoveListener(networkAuthority.SetAuthority);
         _rightHand.Grabbed.RemoveListener(networkTakeAndDrop.TakeObject);
         _rightHand.Released.RemoveListener(networkTakeAndDrop.DropObject);

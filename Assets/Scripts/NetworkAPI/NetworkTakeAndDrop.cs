@@ -64,8 +64,11 @@ namespace NetworkAPI
                 _itemInRightHand = grabbable.gameObject;
             }
 
-            if (DropObjectPastOwner(grabberBase, grabbable)) { return; }
-            
+            if (DropObjectPastOwner(grabberBase, grabbable))
+            {
+                return;
+            }
+
             StartCoroutine(DelayTakeObject(grabberBase, grabbable, 0.1f));
         }
 
@@ -85,7 +88,7 @@ namespace NetworkAPI
                 connectedAnchor = joint.connectedAnchor,
                 secondaryAxis = joint.secondaryAxis
             };
-            var isLeftHand = grabberBase.GetComponent<HVRHandGrabber>().HandSide == HVRHandSide.Left;
+            var isLeftHand = IsLeftHand(grabberBase);
 
             var jointWithHand = grabbable.gameObject.AddComponent<ConfigurableJointWithHand>();
             jointWithHand.isLeftHand = isLeftHand;
@@ -98,7 +101,7 @@ namespace NetworkAPI
         private void CmdTakeObject(uint id, bool isLeftHand, GameObject item, DataJoint dataJoint)
         {
             if (isOwned) return;
-            
+
             CreateJoint(isLeftHand, item, dataJoint);
             foreach (var conn in NetworkServer.connections.Values)
             {
@@ -159,8 +162,8 @@ namespace NetworkAPI
         [Client]
         public void DropObject(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
         {
-            var isLeftHand = grabberBase.GetComponent<HVRHandGrabber>().HandSide == HVRHandSide.Left;
-
+            var isLeftHand = IsLeftHand(grabberBase);
+            IsLeftHand(grabberBase);
             RemoveJoint(isLeftHand, grabbable.gameObject);
             CmdDropObject(netId, isLeftHand, grabbable.gameObject);
             if (isLeftHand)
@@ -173,18 +176,15 @@ namespace NetworkAPI
         private void CmdDropObject(uint id, bool isLeftHand, GameObject item)
         {
             RemoveJoint(isLeftHand, item);
-            
-            ServerSendOtherPlayers(id, (conn) =>
-            {
-                RpcDropObject(conn, isLeftHand, item);
-            });
+
+            ServerSendOtherPlayers(id, (conn) => { RpcDropObject(conn, isLeftHand, item); });
         }
 
         [TargetRpc]
         private void RpcDropObject(NetworkConnection conn, bool isLeftHand, GameObject item)
         {
             RemoveJoint(isLeftHand, item);
-            
+
             var player = GameObject.FindGameObjectWithTag("Player");
             if (!player)
             {
@@ -194,8 +194,7 @@ namespace NetworkAPI
 
             foreach (var handGrabber in player.GetComponentsInChildren<HVRHandGrabberNetwork>())
             {
-                if (handGrabber.HandSide == HVRHandSide.Left && isLeftHand && handGrabber.IsWaitDrop ||
-                    handGrabber.HandSide == HVRHandSide.Right && !isLeftHand)
+                if (handGrabber.IsWaitDrop)
                 {
                     handGrabber.TryGrab(item.GetComponent<HVRGrabbable>());
                 }
@@ -208,8 +207,7 @@ namespace NetworkAPI
             var isLeftHand = IsLeftHand(grabberBase);
             foreach (var jointWithHand in grabbable.GetComponents<ConfigurableJointWithHand>())
             {
-                if (jointWithHand.isLeftHand != isLeftHand) continue;
-                var pastOwnerPlayer = jointWithHand.joint.connectedBody.transform.parent;
+                var pastOwnerPlayer = jointWithHand.joint.connectedBody.transform.parent.parent;
                 var netIdPastOwner = pastOwnerPlayer.GetComponent<NetworkIdentity>().netId;
                 CmdDropObjectPastOwner(netIdPastOwner, isLeftHand, grabbable.gameObject);
                 return true;
@@ -221,10 +219,7 @@ namespace NetworkAPI
         [Command]
         private void CmdDropObjectPastOwner(uint netIdPastOwner, bool isLeftHand, GameObject item)
         {
-            ServerSendPlayer(netIdPastOwner, (conn) =>
-            {
-                RpcDropObjectPastOwner(conn, isLeftHand, item);
-            });
+            ServerSendPlayer(netIdPastOwner, (conn) => { RpcDropObjectPastOwner(conn, isLeftHand, item); });
         }
 
         [TargetRpc]
@@ -235,11 +230,7 @@ namespace NetworkAPI
 
             foreach (var handGrabber in player.GetComponentsInChildren<HVRHandGrabber>())
             {
-                if (handGrabber.HandSide == HVRHandSide.Left && isLeftHand ||
-                    handGrabber.HandSide == HVRHandSide.Right && !isLeftHand)
-                {
-                    handGrabber.ForceRelease();
-                }
+                handGrabber.ForceRelease();
             }
         }
 
@@ -253,7 +244,7 @@ namespace NetworkAPI
                 }
             }
         }
-        
+
         private bool IsLeftHand(HVRGrabberBase grabberBase)
         {
             if (!grabberBase.TryGetComponent(out HVRHandGrabber handGrabber))
@@ -266,7 +257,7 @@ namespace NetworkAPI
         {
             ServerSend(exceptLocalPlayerNetId, action, Send.AllExceptSelf);
         }
-        
+
         private void ServerSendPlayer(uint playerNetId, Action<NetworkConnectionToClient> action)
         {
             ServerSend(playerNetId, action, Send.Single);
@@ -285,7 +276,7 @@ namespace NetworkAPI
                 Debug.LogError("ServerSend is only called on the server");
                 return;
             }
-            
+
             foreach (var conn in NetworkServer.connections.Values)
             {
                 switch (send)
@@ -297,6 +288,7 @@ namespace NetworkAPI
                         if (conn.identity.netId == netId) continue;
                         break;
                 }
+
                 action?.Invoke(conn);
             }
         }

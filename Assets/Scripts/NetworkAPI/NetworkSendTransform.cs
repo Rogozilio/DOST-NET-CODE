@@ -5,183 +5,268 @@ namespace NetworkAPI
 {
     public class NetworkSendTransform : NetworkBehaviour
     {
+        public enum CycleSend
+        {
+            Update,
+            FixedUpdate,
+            ManuallyInCode
+        }
+
         public enum SendType
         {
-            [InspectorName("Client -> Server")] 
-            FromClientToServer,
-            [InspectorName("Server -> Clients")] 
-            FromServerToClients,
+            [InspectorName("Client -> Server")] FromClientToServer,
+            [InspectorName("Server -> Clients")] FromServerToClients,
+
             [InspectorName("Client -> Server -> Clients")]
             FromClientToServerToClients
         }
 
+        public bool isRecipient;
+        public GameObject target;
+        public bool syncTarget;
         public bool syncPosition;
         public bool syncRotation;
         public bool syncScale;
 
         public bool sendEveryoneExceptMe;
         public SendType sendType;
+        public CycleSend cycleSend;
 
-        public void Send(uint clientId, GameObject target, Vector3 position = default, Quaternion rotation = default,
-            Vector3 scale = default)
+        public void Send()
         {
+            if(isRecipient) return;
+            
             switch (sendType)
             {
-                case SendType.FromClientToServer:
-                    SendFromClientToServer(target, position, rotation, scale);
+                case SendType.FromClientToServer when !isServer:
+                    if (syncTarget)
+                        SendFromClientToServerWithTarget(target, target.transform.position, target.transform.rotation,
+                            target.transform.localScale, 0);
+                    else
+                        SendFromClientToServer(target.transform.position, target.transform.rotation,
+                            target.transform.localScale, 0);
                     break;
-                case SendType.FromServerToClients:
-                    SendFromServerToClients(clientId, target);
+                case SendType.FromServerToClients when isServer:
+                    SendFromServerToClients(netId);
                     break;
-                case SendType.FromClientToServerToClients:
-                    SendFromClientToServer(target, position, rotation, scale);
-                    SendFromServerToClients(clientId, target);
+                case SendType.FromClientToServerToClients when !isServer:
+                    if (syncTarget)
+                        SendFromClientToServerWithTarget(target, target.transform.position, target.transform.rotation,
+                            target.transform.localScale, netId);
+                    else
+                        SendFromClientToServer(target.transform.position, target.transform.rotation,
+                            target.transform.localScale, netId);
                     break;
             }
         }
 
-        [Command]
-        private void SendFromClientToServer(GameObject target, Vector3 position, Quaternion rotation,
-            Vector3 scale)
+        private void Update()
         {
-            SendTransformFromClientToServer(target, position, rotation, scale);
+            if (cycleSend != CycleSend.Update) return;
+
+            Send();
+        }
+
+        private void FixedUpdate()
+        {
+            if (cycleSend != CycleSend.FixedUpdate) return;
+
+            Send();
+        }
+
+        [Command]
+        private void SendFromClientToServer(Vector3 position, Quaternion rotation, Vector3 scale, uint networkId)
+        {
+            SendTransformFromClientToServer(position, rotation, scale, networkId);
+        }
+
+        [Command]
+        private void SendFromClientToServerWithTarget(GameObject target, Vector3 position, Quaternion rotation,
+            Vector3 scale, uint networkId)
+        {
+            this.target = target;
+            SendTransformFromClientToServer(position, rotation, scale, networkId);
+        }
+
+        [Server]
+        private void SendFromServerToClientsWithTarget(GameObject target, uint clientId)
+        {
+            SendTargetFromServerToClients(target);
+            SendFromServerToClients(clientId);
         }
         
         [Server]
-        private void SendFromServerToClients(uint clientId, GameObject target)
+        private void SendFromServerToClients(uint clientId)
         {
-            if(!isServer) return;
-            
             if (sendEveryoneExceptMe)
             {
-                SendTransformFromServerToClient(clientId, target, target.transform.position,
+                SendTransformFromServerToClient(clientId, target.transform.position,
                     target.transform.rotation, target.transform.localScale);
             }
             else
             {
-                SendTransformFromServerToClients(target, target.transform.position, target.transform.rotation,
+                SendTransformFromServerToClients(target.transform.position, target.transform.rotation,
                     target.transform.localScale);
             }
         }
-
+        
         [Server]
-        private void SendTransformFromClientToServer(GameObject target, Vector3 position, Quaternion rotation,
-            Vector3 scale)
+        private void SendTransformFromClientToServer(Vector3 position, Quaternion rotation,
+            Vector3 scale, uint networkId)
         {
             if (syncPosition)
-                SendPositionFromClientToServer(position, target);
+                SendPositionFromClientToServer(position);
             if (syncRotation && rotation != default)
-                SendRotationFromClientToServer(rotation, target);
+                SendRotationFromClientToServer(rotation);
             if (syncScale && scale != default)
-                SendScaleFromClientToServer(scale, target);
-        }
-        [Server]
-        private void SendTransformFromServerToClients(GameObject target, Vector3 position, Quaternion rotation,
-            Vector3 scale)
-        {
-            if (syncPosition)
-                SendPositionFromServerToClients(position, target);
-            if (syncRotation && rotation != default)
-                SendRotationFromServerToClients(rotation, target);
-            if (syncScale && scale != default)
-                SendScaleFromServerToClients(scale, target);
+                SendScaleFromClientToServer(scale);
+            
+            if(syncTarget)
+                SendFromServerToClientsWithTarget(target, networkId);
+            else
+                SendFromServerToClients(networkId);
         }
 
         [Server]
-        private void SendTransformFromServerToClient(uint clientId, GameObject target, Vector3 position,
+        private void SendTransformFromServerToClients(Vector3 position, Quaternion rotation,
+            Vector3 scale)
+        {
+            if (syncPosition)
+                SendPositionFromServerToClients(position);
+            if (syncRotation && rotation != default)
+                SendRotationFromServerToClients(rotation);
+            if (syncScale && scale != default)
+                SendScaleFromServerToClients(scale);
+        }
+
+        [Server]
+        private void SendTransformFromServerToClient(uint clientId, Vector3 position,
             Quaternion rotation, Vector3 scale)
         {
             foreach (var connection in NetworkServer.connections.Values)
             {
-                if (connection.identity.netId == clientId) continue;
+                if (connection.identity && connection.identity.netId == clientId) continue;
                 if (syncPosition)
-                    SendPositionFromServerToClient(connection, position, target);
+                    SendPositionFromServerToClient(connection, position);
                 if (syncRotation && rotation != default)
-                    SendRotationFromServerToClient(connection, rotation, target);
+                    SendRotationFromServerToClient(connection, rotation);
                 if (syncScale && scale != default)
-                    SendScaleFromServerToClient(connection, scale, target);
+                    SendScaleFromServerToClient(connection, scale);
             }
         }
 
         [Server]
-        private void SendPositionFromClientToServer(Vector3 position, GameObject target)
+        private void SendPositionFromClientToServer(Vector3 position)
         {
-            if (target)
-                target.transform.position = position;
-            else
-                transform.position = position;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.position = position;
         }
 
         [Server]
-        private void SendRotationFromClientToServer(Quaternion rotation, GameObject target)
+        private void SendRotationFromClientToServer(Quaternion rotation)
         {
-            if (target)
-                target.transform.rotation = rotation;
-            else
-                transform.rotation = rotation;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.rotation = rotation;
         }
 
         [Server]
-        private void SendScaleFromClientToServer(Vector3 scale, GameObject target)
+        private void SendScaleFromClientToServer(Vector3 scale)
         {
-            if (target)
-                target.transform.localScale = scale;
-            else
-                transform.localScale = scale;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.localScale = scale;
         }
 
         [ClientRpc]
-        private void SendPositionFromServerToClients(Vector3 position, GameObject target)
+        private void SendPositionFromServerToClients(Vector3 position)
         {
-            if (target)
-                target.transform.position = position;
-            else
-                transform.position = position;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.position = position;
         }
 
         [ClientRpc]
-        private void SendRotationFromServerToClients(Quaternion rotation, GameObject target)
+        private void SendRotationFromServerToClients(Quaternion rotation)
         {
-            if (target)
-                target.transform.rotation = rotation;
-            else
-                transform.rotation = rotation;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.rotation = rotation;
         }
 
         [ClientRpc]
-        private void SendScaleFromServerToClients(Vector3 scale, GameObject target)
+        private void SendScaleFromServerToClients(Vector3 scale)
         {
-            if (target)
-                target.transform.localScale = scale;
-            else
-                transform.localScale = scale;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.localScale = scale;
+        }
+
+        [ClientRpc]
+        private void SendTargetFromServerToClients(GameObject target)
+        {
+            this.target = target;
         }
 
         [TargetRpc]
-        private void SendPositionFromServerToClient(NetworkConnection conn, Vector3 position, GameObject target)
+        private void SendPositionFromServerToClient(NetworkConnection conn, Vector3 position)
         {
-            if (target)
-                target.transform.position = position;
-            else
-                transform.position = position;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.position = position;
         }
 
         [TargetRpc]
-        private void SendRotationFromServerToClient(NetworkConnection conn, Quaternion rotation, GameObject target)
+        private void SendRotationFromServerToClient(NetworkConnection conn, Quaternion rotation)
         {
-            if (target)
-                target.transform.rotation = rotation;
-            else
-                transform.rotation = rotation;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.rotation = rotation;
         }
 
         [TargetRpc]
-        private void SendScaleFromServerToClient(NetworkConnection conn, Vector3 scale, GameObject target)
+        private void SendScaleFromServerToClient(NetworkConnection conn, Vector3 scale)
         {
-            if (target)
-                target.transform.localScale = scale;
-            else
-                transform.localScale = scale;
+            if (!target)
+            {
+                Debug.LogError("target null");
+                return;
+            }
+
+            target.transform.localScale = scale;
         }
     }
 }

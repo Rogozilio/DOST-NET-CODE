@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AnimatorNetwork : NetworkBehaviour
 {
+    public bool isRecipient;
     public Transform leftHand;
     public Transform rightHand;
 
@@ -29,7 +30,7 @@ public class AnimatorNetwork : NetworkBehaviour
 
     private void Update()
     {
-        if (isServer) return;
+        if (isServer || isRecipient) return;
 
         for (var i = 0; i < _fingersLeftHand.Count; i++)
         {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using HurricaneVR.Framework.Core;
 using HurricaneVR.Framework.Core.Grabbers;
 using HurricaneVR.Framework.Shared;
@@ -12,14 +10,13 @@ public class HVRHandGrabberNetwork : HVRHandGrabber
     public bool IsWaitDrop => isWaitDrop;
     protected override void GrabGrabbable(HVRGrabberBase grabber, HVRGrabbable grabbable, bool raiseEvents = true)
     {
-        var isLeftHand = grabber.GetComponent<HVRHandGrabber>().HandSide == HVRHandSide.Left;
         foreach (var configurable in grabbable.GetComponents<ConfigurableJointWithHand>())
         {
-            if (configurable.isLeftHand == isLeftHand)
+            if (!configurable.joint.connectedBody.CompareTag(grabber.tag))
             {
+                Debug.Log("Wait Drop");
                 Grabbed.Invoke(grabber, grabbable);
                 isWaitDrop = true;
-                Debug.Log("Not Take Object");
                 return;
             }
         }

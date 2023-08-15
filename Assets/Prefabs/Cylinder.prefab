@@ -358,11 +358,14 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  target: {fileID: 5261198109828977755}
+  syncTarget: 0
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
   sendEveryoneExceptMe: 0
   sendType: 1
+  cycleSend: 2
 --- !u!1 &5976716324843612441
 GameObject:
   m_ObjectHideFlags: 0

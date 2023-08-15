@@ -839,7 +839,7 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 4991900049618438285, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
+  playerPrefab: {fileID: 4241765832903732455, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
@@ -857,9 +857,9 @@ MonoBehaviour:
     dynamicAdjustmentTolerance: 1
     deliveryTimeEmaDuration: 2
   timeInterpolationGui: 0
-  playerOnline: {fileID: 5489280054681424019, guid: ddc139a1f00cb9846b818755ebe95de6,
+  playerOnline: {fileID: 2588470103631281418, guid: ddc139a1f00cb9846b818755ebe95de6,
     type: 3}
-  playerGhost: {fileID: 4991900049618438285, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
+  playerGhost: {fileID: 4241765832903732455, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
     type: 3}
 --- !u!1 &854089850
 GameObject:
