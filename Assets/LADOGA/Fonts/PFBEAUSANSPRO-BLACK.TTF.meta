@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 7cfe6d4e48671c148becbdc227ba3998
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - PF BeauSans Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 62c323ae851a31346828a892e425f30b, type: 3}
+  - {fileID: 12800000, guid: 96c7f67af93b4a04292e2dc349b78946, type: 3}
+  - {fileID: 12800000, guid: f046ffe765450a646be7b23896b4f2b1, type: 3}
+  - {fileID: 12800000, guid: f2fa7fcd01c4eb94d901b9e9fe0601e7, type: 3}
+  - {fileID: 12800000, guid: 668f9b92c6cf8be409a8a4d596672732, type: 3}
+  - {fileID: 12800000, guid: 1065f93fa4177484ca89b1cd5ebf38da, type: 3}
+  - {fileID: 12800000, guid: 80ee99cbe36efaf47a2e5592856948a2, type: 3}
+  - {fileID: 12800000, guid: 8a6bc11b32c5b9448b0be729651fd078, type: 3}
+  - {fileID: 12800000, guid: 3947cd232633acd4685465fded78410e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

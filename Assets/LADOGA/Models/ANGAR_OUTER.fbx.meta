@@ -1,0 +1,381 @@
+fileFormatVersion: 2
+guid: de19ba2ddc0390d48b6b8069430aa9b5
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      74: 1827226128182048838
+    second: Take 001
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AngarN
+    second: {fileID: 2100000, guid: e34534fc6b1e4d64687750401513efea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black_rubber
+    second: {fileID: 2100000, guid: 3b6709fc8194f744aa1f1bca767aa841, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Concrete
+    second: {fileID: 2100000, guid: ab297d8f03a2ca442b3b765164c4f531, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Graviy
+    second: {fileID: 2100000, guid: 36b27a76fceed8b41bd0aeb980d36839, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hole_Round_Medium
+    second: {fileID: 2100000, guid: 2b80e560f3e27ab4db88807a33259dc2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Kondicioner
+    second: {fileID: 2100000, guid: e403d92e28cc03e46ada04de128188b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lampochka
+    second: {fileID: 2100000, guid: 0cb4b4dfd34ab674c9096ca856ba6d45, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Black
+    second: {fileID: 2100000, guid: d0a5022f9bb76bf4ba1387a73c30901e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Grey_paint
+    second: {fileID: 2100000, guid: 5db1a11b8ea3109429967c4e41a2f346, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Rust
+    second: {fileID: 2100000, guid: 4e4bb31aac373da4db4311679cb01dde, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_White
+    second: {fileID: 2100000, guid: 41ec093c6ec094e4a8fb552d4b65499c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Yellow_paint
+    second: {fileID: 2100000, guid: 6706634bfe980e94f844f12bc7931008, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_gold
+    second: {fileID: 2100000, guid: 27031cf71b108d04084481ebee80ee51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_grey
+    second: {fileID: 2100000, guid: 21cd362ca11f8344cbb3a8ae4f475097, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_grey_dirt
+    second: {fileID: 2100000, guid: 78a0e17a05db38e4d84160dbc5a48281, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_grey_glossy
+    second: {fileID: 2100000, guid: bf2283301f40d7a4f82c3c753a4e6cb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Nadpis_angarouter
+    second: {fileID: 2100000, guid: 1c7a4e3d3258dac47be745d6cb104797, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Green
+    second: {fileID: 2100000, guid: 3349456eb68905d4caa699b5ceba9955, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Red
+    second: {fileID: 2100000, guid: 58839a5b3c282a249826a022d19d4efc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Yellow
+    second: {fileID: 2100000, guid: 205960a4e4d5d8444af52a7d70ec3b35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_black
+    second: {fileID: 2100000, guid: a58d3359875104147b5c534fd9e6b896, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_grey
+    second: {fileID: 2100000, guid: d641a97728669a34f854f05a2db84d7b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_orange
+    second: {fileID: 2100000, guid: 402ddc7a4a24e1e44bb0a096f7cad1dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_white
+    second: {fileID: 2100000, guid: 910c1aab5f8163449b8d7dab57b3242f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plita_Doroga
+    second: {fileID: 2100000, guid: 98b1a821086d31740a94f87401a9fb7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plitka
+    second: {fileID: 2100000, guid: fb6a39b3f0d94f949963be38c1cc27e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plitka1
+    second: {fileID: 2100000, guid: d8bdf27d6fe10e24ab0a978f7472981e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pol_Kvadrat
+    second: {fileID: 2100000, guid: d16b1ed3f7d5758459644782cf91716c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rezba_Metal
+    second: {fileID: 2100000, guid: fe6a0cb9bde494742a5c67346c0af7ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_Angar_Beliy
+    second: {fileID: 2100000, guid: ad8d55f7ee7ea834babfc43526c83b57, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_Angar_Seriy
+    second: {fileID: 2100000, guid: 788e90e4ab84c4240b9579bbf20f34b8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_Angar_Siniy
+    second: {fileID: 2100000, guid: 7ef77011c0f63f34797819b200fc4bd6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_Angar_Vorota
+    second: {fileID: 2100000, guid: 0e7d72eff8dba6e4cb78b90b344714b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_GPA_Beliy
+    second: {fileID: 2100000, guid: ba1994d77cca1a34fb6bf04ad081b3d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_GPA_Siniy
+    second: {fileID: 2100000, guid: 958005137a679474f8c17da5d818d80d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sayding_SAU_Siniy
+    second: {fileID: 2100000, guid: 0ecd127c90200dd43a496ef0321154ef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Setka_Krilo
+    second: {fileID: 2100000, guid: 00ccc29a1d44d3545a7f38b9f8673ab2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Setka_Kvadrat_Big
+    second: {fileID: 2100000, guid: 15bfd2dd2c31696439127cda1480f273, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Setka_Kvadrat_Small
+    second: {fileID: 2100000, guid: c7f6e83dafa2a6e488581331a343b6c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Setka_Siniy_Unic
+    second: {fileID: 2100000, guid: df6624eaeee883a4a927d0ee7509b92e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shlang_Gofra_3
+    second: {fileID: 2100000, guid: 1130e0e2884013249bd34ca8c8078097, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steklo
+    second: {fileID: 2100000, guid: 0cb4b4dfd34ab674c9096ca856ba6d45, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steklo_Neprozrachnoe
+    second: {fileID: 2100000, guid: 8a7ea39dfb03b674d84bf0e2168ed726, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steklo_Zeleniy
+    second: {fileID: 2100000, guid: 341daa1c51b8dce40b00ce8d527b3692, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steklo_Zheltiy
+    second: {fileID: 2100000, guid: 2885b8b5d3659464b9e2c923244a3a29, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Svarka_Metal_1
+    second: {fileID: 2100000, guid: 2e8e55b01acad534eb6585c38f3fe86b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Svarka_Seriy
+    second: {fileID: 2100000, guid: 2e8e55b01acad534eb6585c38f3fe86b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Svarka_Siniy
+    second: {fileID: 2100000, guid: d4d9a78a36aa36a439c21257a44661a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Svarka_Zheltiy
+    second: {fileID: 2100000, guid: 429b4bc6c11bc2d4c8150b8e80efcc95, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Warning_Stripes
+    second: {fileID: 2100000, guid: 0c3bf573b959e7f45af7086279406e4a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_Blue
+    second: {fileID: 2100000, guid: bdead343b7827e747984b1ec5aa4dc74, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal_Blue_light
+    second: {fileID: 2100000, guid: 652188b7ee433f3479c29e32e7d1bb09, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metalic_Red
+    second: {fileID: 2100000, guid: c4dc38919c45e314d8b3621b6df3adac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plastic_Blue
+    second: {fileID: 2100000, guid: f03c2f4e750b6b644aba8b08318be9c0, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 1
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 1
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
