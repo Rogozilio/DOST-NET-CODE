@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NetworkAPI
 {
-    public class NetworkAuthority : NetworkBehaviour
+    public class  NetworkAuthority : NetworkBehaviour
     {
         private NetworkIdentity _networkIdentity;
 

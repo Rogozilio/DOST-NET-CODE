@@ -7,6 +7,8 @@ public class ItemNetwork : NetworkBehaviour
 {
     public NetworkAuthority networkAuthority;
     public NetworkSendTransform networkSendTransform;
+    public NetworkSendRigidbody networkSendRigidbody;
+    [Space] public bool isSyncForceGrabbbale = true;
 
     private HVRGrabbable _grabbable;
 
@@ -41,7 +43,9 @@ public class ItemNetwork : NetworkBehaviour
         Debug.Log(name + " isForceGrabbable = " + _grabbable.ForceGrabbable);
         if (_grabbable.ForceGrabbable && isServer)
         {
-            networkSendTransform.Send();
+            if(networkSendTransform) networkSendTransform.Send();
+            if(networkSendRigidbody) networkSendRigidbody.Send();
+            Debug.Log("axaxaxaxa");
         }
     }
 
@@ -60,6 +64,8 @@ public class ItemNetwork : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void SyncForceGrabbable(bool value)
     {
+        if(!isSyncForceGrabbbale) return;
+        
         _grabbable.ForceGrabbable = _forceGrabbable = value;
     }
 }

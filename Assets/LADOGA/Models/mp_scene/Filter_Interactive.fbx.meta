@@ -57,6 +57,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Metal_grey_glossy
+    second: {fileID: 2100000, guid: bf2283301f40d7a4f82c3c753a4e6cb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Plastic_Green
     second: {fileID: 2100000, guid: 3349456eb68905d4caa699b5ceba9955, type: 2}
   - first:
@@ -69,6 +74,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Plastic_black
     second: {fileID: 2100000, guid: a58d3359875104147b5c534fd9e6b896, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Weld_grey
+    second: {fileID: 2100000, guid: eda34ce651d88e1488b35220614ded79, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

@@ -1,26 +1,11 @@
 ﻿using Mirror;
+using NetworkAPI.Enums;
 using UnityEngine;
 
 namespace NetworkAPI
 {
     public class NetworkSendTransform : NetworkBehaviour
     {
-        public enum CycleSend
-        {
-            Update,
-            FixedUpdate,
-            ManuallyInCode
-        }
-
-        public enum SendType
-        {
-            [InspectorName("Client -> Server")] FromClientToServer,
-            [InspectorName("Server -> Clients")] FromServerToClients,
-
-            [InspectorName("Client -> Server -> Clients")]
-            FromClientToServerToClients
-        }
-
         public bool isRecipient;
         public GameObject target;
         public bool syncTarget;
@@ -31,34 +16,6 @@ namespace NetworkAPI
         public bool sendEveryoneExceptMe;
         public SendType sendType;
         public CycleSend cycleSend;
-
-        public void Send()
-        {
-            if(isRecipient) return;
-            
-            switch (sendType)
-            {
-                case SendType.FromClientToServer when !isServer:
-                    if (syncTarget)
-                        SendFromClientToServerWithTarget(target, target.transform.position, target.transform.rotation,
-                            target.transform.localScale, 0);
-                    else
-                        SendFromClientToServer(target.transform.position, target.transform.rotation,
-                            target.transform.localScale, 0);
-                    break;
-                case SendType.FromServerToClients when isServer:
-                    SendFromServerToClients(netId);
-                    break;
-                case SendType.FromClientToServerToClients when !isServer:
-                    if (syncTarget)
-                        SendFromClientToServerWithTarget(target, target.transform.position, target.transform.rotation,
-                            target.transform.localScale, netId);
-                    else
-                        SendFromClientToServer(target.transform.position, target.transform.rotation,
-                            target.transform.localScale, netId);
-                    break;
-            }
-        }
 
         private void Update()
         {
@@ -72,6 +29,34 @@ namespace NetworkAPI
             if (cycleSend != CycleSend.FixedUpdate) return;
 
             Send();
+        }
+        
+        public void Send()
+        {
+            if(isRecipient) return;
+            
+            switch (sendType)
+            {
+                case SendType.FromClientToServer when !isServer:
+                    if (syncTarget)
+                        SendFromClientToServerWithTarget(target, target.transform.position, target.transform.rotation,
+                            target.transform.localScale, netId);
+                    else
+                        SendFromClientToServer(target.transform.position, target.transform.rotation,
+                            target.transform.localScale, netId);
+                    break;
+                case SendType.FromServerToClients when isServer:
+                    SendFromServerToClients(netId);
+                    break;
+                case SendType.FromClientToServerToClients when !isServer:
+                    if (syncTarget)
+                        SendFromClientToServerWithTarget(target, target.transform.position, target.transform.rotation,
+                            target.transform.localScale, netId);
+                    else
+                        SendFromClientToServer(target.transform.position, target.transform.rotation,
+                            target.transform.localScale, netId);
+                    break;
+            }
         }
 
         [Command]

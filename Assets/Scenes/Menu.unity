@@ -834,7 +834,7 @@ MonoBehaviour:
   autoConnectClientBuild: 0
   sendRate: 30
   offlineScene: Assets/Scenes/Menu.unity
-  onlineScene: Assets/Scenes/SampleScene.unity
+  onlineScene: Assets/LADOGA/Scenes/MP_scene.unity
   transport: {fileID: 762325264}
   networkAddress: localhost
   maxConnections: 100
@@ -844,8 +844,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
-  - {fileID: 745132663587056386, guid: 2e6a8d9720563ad49b89ff5a914cb382, type: 3}
-  - {fileID: 5261198109828977755, guid: 89be53eddd238df4cae3e1d1ac3afc4e, type: 3}
+  - {fileID: 2934164161047477253, guid: 63cd4694609a7dd43bc23b8f88bf0bf2, type: 3}
   snapshotSettings:
     bufferTimeMultiplier: 2
     catchupNegativeThreshold: -1
