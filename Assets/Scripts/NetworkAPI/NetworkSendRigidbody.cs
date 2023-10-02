@@ -1,7 +1,7 @@
-﻿using Mirror;
+﻿using DefaultNamespace;
+using Mirror;
 using NetworkAPI.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NetworkAPI
 {
@@ -48,22 +48,35 @@ namespace NetworkAPI
         public CycleSend cycleSend;
         public bool isRequiresAuthority = true;
 
-        private bool velocityChanged;
-        private bool angularVelocityChanged;
-        private bool massChanged;
-        private bool dragChanged;
-        private bool angularDragChanged;
-        private bool useGravityChanged;
-        private bool isKinematicChanged;
+        private bool _velocityChanged;
+        private bool _angularVelocityChanged;
+        private bool _massChanged;
+        private bool _dragChanged;
+        private bool _angularDragChanged;
+        private bool _useGravityChanged;
+        private bool _isKinematicChanged;
 
         private Rigidbody _targetRigidbody;
+        private ChangeValue _changeValue;
         private ClientSyncState _previousValue;
+        
+        public GameObject SetTarget
+        {
+            set
+            {
+                if(target == value) return;
+                target = value;
+                _targetRigidbody = target.GetComponent<Rigidbody>();
+                _previousValue.Refresh(_targetRigidbody);
+            }
+        }
 
         private void Awake()
         {
-            Debug.Log("Test commit");
-            _targetRigidbody = target.GetComponent<Rigidbody>();
+            _changeValue = new ChangeValue();
             _previousValue = new ClientSyncState();
+            if (!target) return;
+            _targetRigidbody = target.GetComponent<Rigidbody>();
             _previousValue.Refresh(_targetRigidbody);
         }
 
@@ -81,39 +94,24 @@ namespace NetworkAPI
             Send();
         }
 
-        public bool IsChangeValue(bool prevValue, bool value)
-        {
-            return prevValue != value;
-        }
-
-        public bool IsChangeValue(float prevValue, float value, float delta = 0.01f)
-        {
-            return Mathf.Abs(value - prevValue) > delta;
-        }
-
-        public bool IsChangeValue(Vector3 prevValue, Vector3 value, float delta = 0.01f)
-        {
-            return (prevValue - value).sqrMagnitude > delta * delta;
-        }
-
         public void Send()
         {
             if (isRecipient) return;
             
-            velocityChanged 
-                = syncVelocity && IsChangeValue(_previousValue.velocity, _targetRigidbody.velocity);
-            angularVelocityChanged 
-                = syncAngularVelocity && IsChangeValue(_previousValue.angularVelocity, _targetRigidbody.angularVelocity);
-            massChanged 
-                = syncMass && IsChangeValue(_previousValue.mass, _targetRigidbody.mass);
-            dragChanged 
-                = syncDrag && IsChangeValue(_previousValue.drag, _targetRigidbody.drag);
-            angularDragChanged 
-                = syncAngularDrag && IsChangeValue(_previousValue.angularDrag, _targetRigidbody.angularDrag);
-            useGravityChanged 
-                = syncUseGravity && IsChangeValue(_previousValue.useGravity, _targetRigidbody.useGravity);
-            isKinematicChanged 
-                = syncIsKinematic && IsChangeValue(_previousValue.isKinematic, _targetRigidbody.isKinematic);
+            _velocityChanged 
+                = syncVelocity && _changeValue.Check(_previousValue.velocity, _targetRigidbody.velocity);
+            _angularVelocityChanged 
+                = syncAngularVelocity && _changeValue.Check(_previousValue.angularVelocity, _targetRigidbody.angularVelocity);
+            _massChanged 
+                = syncMass && _changeValue.Check(_previousValue.mass, _targetRigidbody.mass);
+            _dragChanged 
+                = syncDrag && _changeValue.Check(_previousValue.drag, _targetRigidbody.drag);
+            _angularDragChanged 
+                = syncAngularDrag && _changeValue.Check(_previousValue.angularDrag, _targetRigidbody.angularDrag);
+            _useGravityChanged 
+                = syncUseGravity && _changeValue.Check(_previousValue.useGravity, _targetRigidbody.useGravity);
+            _isKinematicChanged 
+                = syncIsKinematic && _changeValue.Check(_previousValue.isKinematic, _targetRigidbody.isKinematic);
 
             switch (sendType)
             {
@@ -142,24 +140,24 @@ namespace NetworkAPI
             if (isRequiresAuthority)
             {
                 if (syncTarget) CmdSendTarget(target);
-                if (velocityChanged) CmdSendVelocity(_targetRigidbody.velocity);
-                if (angularVelocityChanged) CmdSendAngularVelocity(_targetRigidbody.angularVelocity);
-                if (massChanged) CmdSendMass(_targetRigidbody.mass);
-                if (dragChanged) CmdSendDrag(_targetRigidbody.drag);
-                if (angularDragChanged) CmdSendAngularDrag(_targetRigidbody.angularDrag);
-                if (useGravityChanged) CmdSendUseGravity(_targetRigidbody.useGravity);
-                if (isKinematicChanged) CmdSendIsKinematic(_targetRigidbody.isKinematic); 
+                if (_velocityChanged) CmdSendVelocity(_targetRigidbody.velocity);
+                if (_angularVelocityChanged) CmdSendAngularVelocity(_targetRigidbody.angularVelocity);
+                if (_massChanged) CmdSendMass(_targetRigidbody.mass);
+                if (_dragChanged) CmdSendDrag(_targetRigidbody.drag);
+                if (_angularDragChanged) CmdSendAngularDrag(_targetRigidbody.angularDrag);
+                if (_useGravityChanged) CmdSendUseGravity(_targetRigidbody.useGravity);
+                if (_isKinematicChanged) CmdSendIsKinematic(_targetRigidbody.isKinematic); 
             }
             else
             {
                 if (syncTarget) CmdSendTargetWithoutAuthority(target);
-                if (velocityChanged) CmdSendVelocityWithoutAuthority(_targetRigidbody.velocity);
-                if (angularVelocityChanged) CmdSendAngularVelocityWithoutAuthority(_targetRigidbody.angularVelocity);
-                if (massChanged) CmdSendMassWithoutAuthority(_targetRigidbody.mass);
-                if (dragChanged) CmdSendDragWithoutAuthority(_targetRigidbody.drag);
-                if (angularDragChanged) CmdSendAngularDragWithoutAuthority(_targetRigidbody.angularDrag);
-                if (useGravityChanged) CmdSendUseGravityWithoutAuthority(_targetRigidbody.useGravity);
-                if (isKinematicChanged) CmdSendIsKinematicWithoutAuthority(_targetRigidbody.isKinematic);
+                if (_velocityChanged) CmdSendVelocityWithoutAuthority(_targetRigidbody.velocity);
+                if (_angularVelocityChanged) CmdSendAngularVelocityWithoutAuthority(_targetRigidbody.angularVelocity);
+                if (_massChanged) CmdSendMassWithoutAuthority(_targetRigidbody.mass);
+                if (_dragChanged) CmdSendDragWithoutAuthority(_targetRigidbody.drag);
+                if (_angularDragChanged) CmdSendAngularDragWithoutAuthority(_targetRigidbody.angularDrag);
+                if (_useGravityChanged) CmdSendUseGravityWithoutAuthority(_targetRigidbody.useGravity);
+                if (_isKinematicChanged) CmdSendIsKinematicWithoutAuthority(_targetRigidbody.isKinematic);
             }
         }
 
@@ -187,13 +185,13 @@ namespace NetworkAPI
             foreach (var connection in NetworkServer.connections.Values)
             {
                 if (connection.identity && connection.identity.assetId == exceptNetId) continue;
-                if (velocityChanged) TargetSendVelocity(connection, _targetRigidbody.velocity);
-                if (angularVelocityChanged) TargetSendAngularVelocity(connection, _targetRigidbody.angularVelocity);
-                if (massChanged) TargetSendMass(connection, _targetRigidbody.mass);
-                if (dragChanged) TargetSendDrag(connection, _targetRigidbody.drag);
-                if (angularDragChanged) TargetSendAngularDrag(connection, _targetRigidbody.angularDrag);
-                if (useGravityChanged) TargetSendUseGravity(connection, _targetRigidbody.useGravity);
-                if (isKinematicChanged) TargetSendIsKinematic(connection, _targetRigidbody.isKinematic);
+                if (_velocityChanged) TargetSendVelocity(connection, _targetRigidbody.velocity);
+                if (_angularVelocityChanged) TargetSendAngularVelocity(connection, _targetRigidbody.angularVelocity);
+                if (_massChanged) TargetSendMass(connection, _targetRigidbody.mass);
+                if (_dragChanged) TargetSendDrag(connection, _targetRigidbody.drag);
+                if (_angularDragChanged) TargetSendAngularDrag(connection, _targetRigidbody.angularDrag);
+                if (_useGravityChanged) TargetSendUseGravity(connection, _targetRigidbody.useGravity);
+                if (_isKinematicChanged) TargetSendIsKinematic(connection, _targetRigidbody.isKinematic);
             }
         }
 

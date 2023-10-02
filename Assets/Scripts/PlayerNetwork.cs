@@ -51,18 +51,16 @@ public class PlayerNetwork : NetworkBehaviour
 
     private void Update()
     {
-        if(isServer) return;
-        
         //Send transform item from origin point to left hand
         if (networkTakeAndDrop.IsForceLeftHand)
         {
-            sendTransformItemForceGrab.target = networkTakeAndDrop.GetItemInLeftHand;
+            sendTransformItemForceGrab.SetTarget = networkTakeAndDrop.GetItemInLeftHand;
             sendTransformItemForceGrab.Send();
         }
         //Send transform item from origin point to right hand
         if (networkTakeAndDrop.IsForceRightHand)
         {
-            sendTransformItemForceGrab.target = networkTakeAndDrop.GetItemInRightHand;
+            sendTransformItemForceGrab.SetTarget = networkTakeAndDrop.GetItemInRightHand;
             sendTransformItemForceGrab.Send();
         }
     }

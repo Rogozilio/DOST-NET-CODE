@@ -7,6 +7,8 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/[Bb]uild-Client/
+/[Bb]uild-Server/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 

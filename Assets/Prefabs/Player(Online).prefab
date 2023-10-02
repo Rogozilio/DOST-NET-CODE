@@ -5942,15 +5942,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  isRecipient: 0
+  recipient: 0
   target: {fileID: 6003147732778377035}
   syncTarget: 0
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
-  sendEveryoneExceptMe: 1
   sendType: 2
   cycleSend: 0
+  isRequiresAuthority: 1
 --- !u!114 &1467672504364968791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5966,15 +5966,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  isRecipient: 0
+  recipient: 0
   target: {fileID: 9170351577179497189}
   syncTarget: 0
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
-  sendEveryoneExceptMe: 1
   sendType: 2
   cycleSend: 0
+  isRequiresAuthority: 1
 --- !u!114 &769854742020766144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5990,15 +5990,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  isRecipient: 0
+  recipient: 0
   target: {fileID: 8273532410807296921}
   syncTarget: 0
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
-  sendEveryoneExceptMe: 1
   sendType: 2
   cycleSend: 0
+  isRequiresAuthority: 1
 --- !u!114 &551688838365243525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6014,15 +6014,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  isRecipient: 0
+  recipient: 0
   target: {fileID: 7368453737550893112}
   syncTarget: 0
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
-  sendEveryoneExceptMe: 1
   sendType: 2
   cycleSend: 0
+  isRequiresAuthority: 1
 --- !u!114 &5229119459620511321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6106,15 +6106,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  isRecipient: 0
+  recipient: 0
   target: {fileID: 0}
   syncTarget: 1
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
-  sendEveryoneExceptMe: 1
-  sendType: 2
+  sendType: 0
   cycleSend: 2
+  isRequiresAuthority: 1
 --- !u!114 &5842439902192716709
 MonoBehaviour:
   m_ObjectHideFlags: 0

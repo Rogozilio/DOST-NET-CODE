@@ -839,12 +839,13 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 4241765832903732455, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
+  playerPrefab: {fileID: 7629305029982265591, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 2934164161047477253, guid: 63cd4694609a7dd43bc23b8f88bf0bf2, type: 3}
+  - {fileID: 745132663587056386, guid: 2e6a8d9720563ad49b89ff5a914cb382, type: 3}
   snapshotSettings:
     bufferTimeMultiplier: 2
     catchupNegativeThreshold: -1
@@ -858,7 +859,7 @@ MonoBehaviour:
   timeInterpolationGui: 0
   playerOnline: {fileID: 2588470103631281418, guid: ddc139a1f00cb9846b818755ebe95de6,
     type: 3}
-  playerGhost: {fileID: 4241765832903732455, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
+  playerGhost: {fileID: 7629305029982265591, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
     type: 3}
 --- !u!1 &854089850
 GameObject:

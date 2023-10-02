@@ -42,12 +42,37 @@ namespace NetworkAPI
             {
                 _isForceLeftHand = true;
                 _itemInLeftHand = grabbable.gameObject;
+                CmdIsForceLeftHand(_isForceLeftHand);
+                CmdItemInLeftHand(_itemInLeftHand);
             }
             else
             {
                 _isForceRightHand = true;
                 _itemInRightHand = grabbable.gameObject;
+                CmdIsForceRightHand(_isForceRightHand);
+                CmdItemInRightHand(_itemInRightHand);
             }
+        }
+
+        [Command]
+        private void CmdIsForceLeftHand(bool value)
+        {
+            _isForceLeftHand = value;
+        }
+        [Command]
+        private void CmdIsForceRightHand(bool value)
+        {
+            _isForceRightHand = value;
+        }
+        [Command]
+        private void CmdItemInLeftHand(GameObject value)
+        {
+            _itemInLeftHand = value;
+        }
+        [Command]
+        private void CmdItemInRightHand(GameObject value)
+        {
+            _itemInRightHand = value;
         }
 
         [Client]
@@ -57,11 +82,13 @@ namespace NetworkAPI
             {
                 _isForceLeftHand = false;
                 _itemInLeftHand = grabbable.gameObject;
+                CmdIsForceLeftHand(_isForceLeftHand);
             }
             else
             {
                 _isForceRightHand = false;
                 _itemInRightHand = grabbable.gameObject;
+                CmdIsForceRightHand(_isForceRightHand);
             }
 
             if (DropObjectPastOwner(grabberBase, grabbable))
