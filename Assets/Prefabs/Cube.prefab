@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 5440502042225937862}
   - component: {fileID: 3617437111468281735}
   - component: {fileID: 3274688150656254447}
+  - component: {fileID: 8253043277283162872}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -357,7 +358,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  isRecipient: 0
+  recipient: 0
   target: {fileID: 745132663587056386}
   syncTarget: 0
   syncPosition: 1
@@ -366,6 +367,28 @@ MonoBehaviour:
   sendType: 1
   cycleSend: 2
   isRequiresAuthority: 1
+--- !u!114 &8253043277283162872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745132663587056386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10345b4efa150014fb756a02715a4231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SocketOrientation: {fileID: 0}
+  SocketScale: 1
+  CounterScale: {x: 1, y: 1, z: 1}
+  ScaleOverride: {fileID: 0}
+  SocketedClip: {fileID: 0}
+  UnsocketedClip: {fileID: 0}
+  LinkedGrabbables: []
+  Tags:
+    Tags: {fileID: 11400000, guid: 0e83bcde818c784468e6c9a69d44702f, type: 2}
+    _data: 2
 --- !u!1 &3964079154784367435
 GameObject:
   m_ObjectHideFlags: 0
