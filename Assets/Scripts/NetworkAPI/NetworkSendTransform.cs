@@ -82,7 +82,7 @@ namespace NetworkAPI
             if (recipient == RecipientType.ClientAndServer) return;
 
             _positionChanged
-                = syncPosition && _changeValue.Check(_previousValue.position, _targetTransform.position);
+                = syncPosition && _changeValue.Check(_previousValue.position, _targetTransform.position, 0.001f);
             _rotationChanged
                 = syncRotation && _changeValue.Check(_previousValue.rotation, _targetTransform.rotation);
             _scaleChanged

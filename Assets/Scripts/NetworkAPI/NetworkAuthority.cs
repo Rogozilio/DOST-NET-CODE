@@ -19,6 +19,7 @@ namespace NetworkAPI
         public void SetAuthority(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
         {
             var networkIdentity = grabbable.GetComponent<NetworkIdentity>();
+            if(!networkIdentity) return;
 
             if (networkIdentity.isClient)
             {

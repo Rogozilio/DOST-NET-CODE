@@ -19,8 +19,6 @@ namespace HurricaneVR.Framework.Core
 
     public class HVRGrabbable : MonoBehaviour
     {
-        
-        
         #region Fields
 
         internal const int TrackedVelocityCount = 10;
@@ -216,7 +214,7 @@ namespace HurricaneVR.Framework.Core
 
         public float ElapsedSinceReleased { get; private set; }
         public bool IsBeingHeld => _distinctGrabbers.Count > 0;
-        public bool IsSocketed { get; private set; }
+        public bool IsSocketed { get; /*private*/ set; }
         public bool IsBeingForcedGrabbed { get; internal set; }
 
         public bool IsClimbable { get; private set; }
@@ -414,6 +412,11 @@ namespace HurricaneVR.Framework.Core
             CheckIfStabbing();
 
             ProcessUpdate();
+        }
+
+        public void LaunchStartEvent()
+        {
+            Start();
         }
 
         private void CheckIfStabbing()

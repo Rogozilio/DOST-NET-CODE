@@ -1265,6 +1265,7 @@ namespace HurricaneVR.Framework.Core.Grabbers
                     Debug.Log($"final joint created {angleDelta}");
 
                 PullingGrabbable = false;
+                GrabbedFinish.Invoke(this, GrabbedTarget);
 
                 SetupConfigurableJoint(GrabbedTarget, true);
 

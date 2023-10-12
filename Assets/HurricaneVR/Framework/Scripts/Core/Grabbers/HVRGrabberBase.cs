@@ -11,6 +11,7 @@ namespace HurricaneVR.Framework.Core.Grabbers
     {
         public VRGrabberEvent BeforeGrabbed = new VRGrabberEvent();
         public VRGrabberEvent Grabbed = new VRGrabberEvent();
+        public VRGrabberEvent GrabbedFinish = new VRGrabberEvent();
         public VRGrabberEvent Released = new VRGrabberEvent();
         public VRGrabberEvent BeforeHoverEnter = new VRGrabberEvent();
         public VRGrabberEvent HoverEnter = new VRGrabberEvent();
@@ -163,6 +164,12 @@ namespace HurricaneVR.Framework.Core.Grabbers
         public virtual void HandSwapRelease()
         {
             ReleaseGrabbable(this, GrabbedTarget, true, true);
+        }
+
+        public void ReleaseGrabbable(HVRGrabbable grabbable)
+        {
+            OnReleased(grabbable);
+            //ReleaseGrabbable(this, grabbable, true, true);
         }
 
         internal static void ReleaseGrabbable(HVRGrabberBase grabber, HVRGrabbable grabbable, bool raiseEvents = true, bool isHandSwap = false)

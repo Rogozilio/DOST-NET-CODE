@@ -728,7 +728,10 @@ namespace HurricaneVR.Framework.Core.Grabbers
             return true;
         }
 
-
+        public void OnReleasedStart(HVRGrabbable grabbable)
+        {
+            OnReleased(grabbable);
+        }
       
 
         protected virtual IEnumerator GrabTimeoutRoutine(HVRGrabbable grabbable)

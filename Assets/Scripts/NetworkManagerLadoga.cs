@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class NetworkManagerLadoga : NetworkManager
 {
     public GameObject playerOnline;
     public GameObject playerGhost;
+    public GameObject backpack;
 
     private DebugAuthority _debugAuthority;
 
@@ -16,6 +18,7 @@ public class NetworkManagerLadoga : NetworkManager
 
     public override void Start()
     {
+        NetworkClient.RegisterPrefab(backpack);
         NetworkClient.UnregisterPrefab(playerPrefab);
         NetworkClient.RegisterPrefab(playerPrefab, SpawnPlayer, obj => Destroy(obj));
         base.Start();
@@ -48,9 +51,12 @@ public class NetworkManagerLadoga : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        GameObject player = Instantiate(NetworkServer.activeHost ? playerOnline : playerGhost,
-            startPositions[numPlayers].position, startPositions[numPlayers].rotation);
+        var backpack = Instantiate(this.backpack);
+        NetworkServer.Spawn(backpack);
 
+        var player = Instantiate(NetworkServer.activeHost ? playerOnline : playerGhost,
+            startPositions[numPlayers].position, startPositions[numPlayers].rotation);
+        player.GetComponent<PlayerNetwork>().SetBackpackNetId = backpack.GetComponent<NetworkIdentity>().netId;
         NetworkServer.AddPlayerForConnection(conn, player, playerGhost.GetComponent<NetworkIdentity>().assetId);
 
         if (_debugAuthority)

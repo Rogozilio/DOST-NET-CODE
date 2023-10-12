@@ -15,7 +15,7 @@ public class HVRHandGrabberNetwork : HVRHandGrabber
             if (!configurable.joint.connectedBody.CompareTag(grabber.tag))
             {
                 Debug.Log("Wait Drop");
-                Grabbed.Invoke(grabber, grabbable);
+                GrabbedFinish.Invoke(grabber, grabbable);
                 isWaitDrop = true;
                 return;
             }

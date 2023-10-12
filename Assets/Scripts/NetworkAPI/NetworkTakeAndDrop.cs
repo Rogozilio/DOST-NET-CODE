@@ -96,7 +96,7 @@ namespace NetworkAPI
                 return;
             }
 
-            StartCoroutine(DelayTakeObject(grabberBase, grabbable, 0.1f));
+            StartCoroutine(DelayTakeObject(grabberBase, grabbable, 0f));
         }
 
         private IEnumerator DelayTakeObject(HVRGrabberBase grabberBase, HVRGrabbable grabbable, float second)
@@ -185,6 +185,87 @@ namespace NetworkAPI
 
             jointWithHand.joint.connectedBody = isLeftHand ? leftHandRigidbody : rightHandRigidbody;
         }
+
+        [Client]
+        public void RefreshJoint(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
+        {
+            var joint = grabbable.gameObject.GetComponents<ConfigurableJoint>()[^1];
+            var dataJoint = new DataJoint()
+            {
+                handPosition = grabberBase.transform.position,
+                handRotation = grabberBase.transform.rotation,
+                itemPosition = grabbable.transform.position,
+                itemRotation = grabbable.transform.rotation,
+                anchor = joint.anchor,
+                axis = joint.axis,
+                connectedAnchor = joint.connectedAnchor,
+                secondaryAxis = joint.secondaryAxis
+            };
+            var isLeftHand = IsLeftHand(grabberBase);
+            
+            CmdRefreshJoint(netId, isLeftHand, grabbable.gameObject, dataJoint);
+        }
+
+        [Command]
+        private void CmdRefreshJoint(uint id, bool isLeftHand, GameObject item, DataJoint dataJoint)
+        {
+            RefreshDataJoint(isLeftHand, item, dataJoint);
+            foreach (var conn in NetworkServer.connections.Values)
+            {
+                if (conn.identity.netId == id) continue;
+                TargetRefreshJoint(conn, isLeftHand, item, dataJoint);
+            }
+        }
+
+        [TargetRpc]
+        private void TargetRefreshJoint(NetworkConnection conn,bool isLeftHand, GameObject item, DataJoint dataJoint)
+        {
+            RefreshDataJoint(isLeftHand, item, dataJoint);
+        }
+
+        private void RefreshDataJoint(bool isLeftHand, GameObject item, DataJoint dataJoint)
+        {
+            item.transform.localRotation = dataJoint.itemRotation;
+            item.transform.position = dataJoint.itemPosition;
+            if (isLeftHand)
+            {
+                leftHandRigidbody.transform.position = dataJoint.handPosition;
+                leftHandRigidbody.transform.rotation = dataJoint.handRotation;
+            }
+            else
+            {
+                rightHandRigidbody.transform.position = dataJoint.handPosition;
+                rightHandRigidbody.transform.rotation = dataJoint.handRotation;
+            }
+            
+            var jointWithHand = item.GetComponent<ConfigurableJointWithHand>();
+            if(!jointWithHand) return;
+            jointWithHand.isLeftHand = isLeftHand;
+            jointWithHand.joint.anchor = dataJoint.anchor;
+            jointWithHand.joint.axis = dataJoint.axis;
+            jointWithHand.joint.autoConfigureConnectedAnchor = false;
+            jointWithHand.joint.connectedAnchor = dataJoint.connectedAnchor;
+            jointWithHand.joint.secondaryAxis = dataJoint.secondaryAxis;
+            jointWithHand.joint.xMotion = ConfigurableJointMotion.Locked;
+            jointWithHand.joint.yMotion = ConfigurableJointMotion.Locked;
+            jointWithHand.joint.zMotion = ConfigurableJointMotion.Locked;
+            jointWithHand.joint.rotationDriveMode = RotationDriveMode.Slerp;
+            jointWithHand.joint.projectionMode = JointProjectionMode.PositionAndRotation;
+            var jointDrive = new JointDrive()
+            {
+                positionSpring = 100000,
+                positionDamper = 1000,
+                maximumForce = 100000
+            };
+            jointWithHand.joint.angularXDrive = jointDrive;
+            jointWithHand.joint.angularYZDrive = jointDrive;
+            jointWithHand.joint.slerpDrive = jointDrive;
+            jointWithHand.joint.projectionDistance = 0.01f;
+            jointWithHand.joint.projectionAngle = 0.01f;
+
+            jointWithHand.joint.connectedBody = isLeftHand ? leftHandRigidbody : rightHandRigidbody;
+        }
+        
 
         [Client]
         public void DropObject(HVRGrabberBase grabberBase, HVRGrabbable grabbable)
