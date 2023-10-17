@@ -52,7 +52,7 @@ namespace DefaultNamespace
         {
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<Rigidbody>().isKinematic = true;
-            inventory.SetActive(false);
+            //inventory.SetActive(false);
             transform.position = default;
 
             foreach (var connection in NetworkServer.connections.Values)
@@ -67,7 +67,7 @@ namespace DefaultNamespace
         {
             GetComponent<MeshRenderer>().enabled = true;
             GetComponent<Rigidbody>().isKinematic = false;
-            inventory.SetActive(true);
+            //inventory.SetActive(true);
             
             foreach (var connection in NetworkServer.connections.Values)
             {
