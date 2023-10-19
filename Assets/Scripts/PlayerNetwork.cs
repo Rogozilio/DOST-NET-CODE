@@ -72,6 +72,7 @@ public class PlayerNetwork : NetworkBehaviour
             return;
         }
         
+        backpack.GetComponent<NetworkBackpack>().playerId = netId;
         backpack.GetComponent<NetworkBackpack>().ConnectWithLeftShoulderForBackpack();
     }
 

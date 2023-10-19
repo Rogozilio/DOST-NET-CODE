@@ -77,16 +77,16 @@ namespace NetworkAPI
             Send();
         }
 
-        public void Send()
+        public void Send(bool isSyncAll = false)
         {
             if (recipient == RecipientType.ClientAndServer) return;
 
             _positionChanged
-                = syncPosition && _changeValue.Check(_previousValue.position, _targetTransform.position, 0.001f);
+                = isSyncAll || syncPosition && _changeValue.Check(_previousValue.position, _targetTransform.position, 0.001f);
             _rotationChanged
-                = syncRotation && _changeValue.Check(_previousValue.rotation, _targetTransform.rotation);
+                = isSyncAll || syncRotation && _changeValue.Check(_previousValue.rotation, _targetTransform.rotation);
             _scaleChanged
-                = syncScale && _changeValue.Check(_previousValue.scale, _targetTransform.localScale);
+                = isSyncAll || syncScale && _changeValue.Check(_previousValue.scale, _targetTransform.localScale);
 
             switch (sendType)
             {

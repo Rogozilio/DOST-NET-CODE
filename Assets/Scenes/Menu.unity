@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18073288, g: 0.22625108, b: 0.30716005, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -839,21 +839,21 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 7629305029982265591, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
+  playerPrefab: {fileID: 6305942134774148077, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 2934164161047477253, guid: 63cd4694609a7dd43bc23b8f88bf0bf2, type: 3}
-  - {fileID: 3573157901881982742, guid: 2e6a8d9720563ad49b89ff5a914cb382, type: 3}
-  - {fileID: 3709471382626426300, guid: 63a76e0fcf824d34295cff94a26a072f, type: 3}
-  - {fileID: 2521869105069391719, guid: 0cff5858e65287647ba424a23a9cfd01, type: 3}
-  - {fileID: 8811224971301277366, guid: 8b8ba88377266e646aadcc2e8724835a, type: 3}
-  - {fileID: 2261507047837551649, guid: 48be41da37e20db4f9f9ae584838720f, type: 3}
-  - {fileID: 3649331529586713733, guid: b1af75dc61b01484fa838790b18e0cad, type: 3}
-  - {fileID: 536232348908923342, guid: b84ca8e5ef5fc7240afd3fc840cc614b, type: 3}
-  - {fileID: 9089170056636246952, guid: 73413cbca3c6b944e836b39281eb3b40, type: 3}
-  - {fileID: 8030731305149864243, guid: 66b35c8a04270c54184e202dad0b2804, type: 3}
+  - {fileID: 4726302100706024101, guid: 2e6a8d9720563ad49b89ff5a914cb382, type: 3}
+  - {fileID: 4158691231541299567, guid: 63a76e0fcf824d34295cff94a26a072f, type: 3}
+  - {fileID: 483086952188230863, guid: b1af75dc61b01484fa838790b18e0cad, type: 3}
+  - {fileID: 8812458485029455782, guid: 0cff5858e65287647ba424a23a9cfd01, type: 3}
+  - {fileID: 7101403843375229499, guid: 8b8ba88377266e646aadcc2e8724835a, type: 3}
+  - {fileID: 2399234572593315785, guid: 48be41da37e20db4f9f9ae584838720f, type: 3}
+  - {fileID: 906094728652301942, guid: b84ca8e5ef5fc7240afd3fc840cc614b, type: 3}
+  - {fileID: 3390580545260599708, guid: 73413cbca3c6b944e836b39281eb3b40, type: 3}
+  - {fileID: 3951264538592636341, guid: 66b35c8a04270c54184e202dad0b2804, type: 3}
   snapshotSettings:
     bufferTimeMultiplier: 2
     catchupNegativeThreshold: -1
@@ -865,11 +865,12 @@ MonoBehaviour:
     dynamicAdjustmentTolerance: 1
     deliveryTimeEmaDuration: 2
   timeInterpolationGui: 0
-  playerOnline: {fileID: 2588470103631281418, guid: ddc139a1f00cb9846b818755ebe95de6,
+  playerOnline: {fileID: 2016380468102093507, guid: ddc139a1f00cb9846b818755ebe95de6,
     type: 3}
-  playerGhost: {fileID: 7629305029982265591, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
+  playerGhost: {fileID: 6305942134774148077, guid: 7da3f9bc5a85e0d4d9264f0d0475143c,
     type: 3}
-  backpack: {fileID: 809632358120627930, guid: b9916b4b71c7bb944bf2d879a1f84798, type: 3}
+  backpack: {fileID: 6007374279367808869, guid: b9916b4b71c7bb944bf2d879a1f84798,
+    type: 3}
 --- !u!1 &854089850
 GameObject:
   m_ObjectHideFlags: 0

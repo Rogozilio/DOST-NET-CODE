@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using HurricaneVR.Framework.Core;
-using HurricaneVR.Framework.Core.Bags;
-using HurricaneVR.Framework.Core.Grabbers;
+﻿using HurricaneVR.Framework.Core;
 using HurricaneVR.Framework.Core.Sockets;
 using HurricaneVR.Framework.Core.Utils;
 using Mirror;
-using NetworkAPI;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -18,7 +13,21 @@ namespace DefaultNamespace
         private HVRGrabbable _hvrGrabbable;
         private HVRSocketContainer _hvrSocketContainer;
         private GameObject _leftShoulder;
+
+        private uint _playerId;
         
+        public uint playerId
+        {
+            get => _playerId;
+            set => _playerId = value;
+        }
+
+        private void Awake()
+        {
+            _hvrGrabbable = GetComponent<HVRGrabbable>();
+            _hvrSocketContainer = GetComponent<HVRSocketContainer>();
+        }
+
         public void ConnectWithLeftShoulderForBackpack()
         {
             _leftShoulder = GameObject.FindGameObjectsWithTag("LeftShoulder")[^1];
@@ -28,8 +37,6 @@ namespace DefaultNamespace
                 Debug.LogError("LeftShoulder not found");
                 return;
             }
-            _hvrGrabbable = GetComponent<HVRGrabbable>();
-            _hvrSocketContainer = GetComponent<HVRSocketContainer>();
             
             var hvrSocket = _leftShoulder.GetComponent<HVRShoulderSocket>();
             var hvrSocketFilter = _leftShoulder.GetComponent<HVRGrabbableSocketFilter>();
@@ -92,5 +99,6 @@ namespace DefaultNamespace
             GetComponent<Rigidbody>().isKinematic = false;
             inventory.SetActive(true);
         }
+        
     }
 }

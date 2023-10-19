@@ -94,24 +94,24 @@ namespace NetworkAPI
             Send();
         }
 
-        public void Send()
+        public void Send(bool isSyncAll = false)
         {
             if (isRecipient) return;
             
             _velocityChanged 
-                = syncVelocity && _changeValue.Check(_previousValue.velocity, _targetRigidbody.velocity);
+                = isSyncAll || syncVelocity && _changeValue.Check(_previousValue.velocity, _targetRigidbody.velocity);
             _angularVelocityChanged 
-                = syncAngularVelocity && _changeValue.Check(_previousValue.angularVelocity, _targetRigidbody.angularVelocity);
+                = isSyncAll || syncAngularVelocity && _changeValue.Check(_previousValue.angularVelocity, _targetRigidbody.angularVelocity);
             _massChanged 
-                = syncMass && _changeValue.Check(_previousValue.mass, _targetRigidbody.mass);
+                = isSyncAll || syncMass && _changeValue.Check(_previousValue.mass, _targetRigidbody.mass);
             _dragChanged 
-                = syncDrag && _changeValue.Check(_previousValue.drag, _targetRigidbody.drag);
+                = isSyncAll || syncDrag && _changeValue.Check(_previousValue.drag, _targetRigidbody.drag);
             _angularDragChanged 
-                = syncAngularDrag && _changeValue.Check(_previousValue.angularDrag, _targetRigidbody.angularDrag);
+                = isSyncAll || syncAngularDrag && _changeValue.Check(_previousValue.angularDrag, _targetRigidbody.angularDrag);
             _useGravityChanged 
-                = syncUseGravity && _changeValue.Check(_previousValue.useGravity, _targetRigidbody.useGravity);
+                = isSyncAll || syncUseGravity && _changeValue.Check(_previousValue.useGravity, _targetRigidbody.useGravity);
             _isKinematicChanged 
-                = syncIsKinematic && _changeValue.Check(_previousValue.isKinematic, _targetRigidbody.isKinematic);
+                = isSyncAll || syncIsKinematic && _changeValue.Check(_previousValue.isKinematic, _targetRigidbody.isKinematic);
 
             switch (sendType)
             {

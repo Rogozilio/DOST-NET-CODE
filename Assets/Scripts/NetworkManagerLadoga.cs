@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HurricaneVR.Framework.Core;
 using Mirror;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class NetworkManagerLadoga : NetworkManager
 
     public override void Start()
     {
-        NetworkClient.RegisterPrefab(backpack);
+        NetworkClient.RegisterPrefab(backpack, SpawnBackpack,obj => Destroy(obj));
         NetworkClient.UnregisterPrefab(playerPrefab);
         NetworkClient.RegisterPrefab(playerPrefab, SpawnPlayer, obj => Destroy(obj));
         base.Start();
@@ -27,6 +28,16 @@ public class NetworkManagerLadoga : NetworkManager
     private GameObject SpawnPlayer(SpawnMessage msg)
     {
         return Instantiate(msg.isLocalPlayer ? playerOnline : playerGhost, msg.position, msg.rotation);
+    }
+    
+    private GameObject SpawnBackpack(SpawnMessage msg)
+    {
+        var backpack = Instantiate(this.backpack);
+        if (!msg.isLocalPlayer)
+        {
+            backpack.GetComponent<HVRGrabbable>().enabled = false;
+        }
+        return backpack;
     }
 
     public override void OnDestroy()
@@ -62,6 +73,12 @@ public class NetworkManagerLadoga : NetworkManager
         if (_debugAuthority)
         {
             _debugAuthority.AddPlayerDebug(NetworkServer.spawned.Last().Value, numPlayers - 1);
+        }
+        
+        foreach (var item in FindObjectsByType<ItemNetwork>(FindObjectsSortMode.None))
+        {
+            item.GetComponent<ItemNetwork>().networkSendTransform?.Send(true);
+            item.GetComponent<ItemNetwork>().networkSendRigidbody?.Send(true);
         }
     }
 }
