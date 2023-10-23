@@ -179,6 +179,7 @@ namespace HurricaneVR.Framework.Core.Player
             _cameraStartingPosition = Camera.localPosition;
 
             Inputs = GetComponent<HVRPlayerInputs>();
+            
 
             if (!ScreenFader)
             {

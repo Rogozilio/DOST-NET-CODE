@@ -14,14 +14,6 @@ namespace DefaultNamespace
         private HVRSocketContainer _hvrSocketContainer;
         private GameObject _leftShoulder;
 
-        private uint _playerId;
-        
-        public uint playerId
-        {
-            get => _playerId;
-            set => _playerId = value;
-        }
-
         private void Awake()
         {
             _hvrGrabbable = GetComponent<HVRGrabbable>();
@@ -50,6 +42,7 @@ namespace DefaultNamespace
 
             _hvrGrabbable.LaunchStartEvent();
             
+            _hvrGrabbable.Grabbed.AddListener((arg1, arg2) => CmdHandGrabbableDisable(netId));
             _hvrGrabbable.Socketed.AddListener((arg1, arg2) => CmdInvokeSocketed(netId));
             _hvrGrabbable.UnSocketed.AddListener((arg1, arg2) => CmdInvokeUnSocketed(netId));
         }
@@ -98,6 +91,24 @@ namespace DefaultNamespace
             GetComponent<MeshRenderer>().enabled = true;
             GetComponent<Rigidbody>().isKinematic = false;
             inventory.SetActive(true);
+        }
+
+        [Command(requiresAuthority = false)]
+        private void CmdHandGrabbableDisable(uint exceptNetId)
+        {
+            _hvrGrabbable.enabled = false;
+            
+            foreach (var connection in NetworkServer.connections.Values)
+            {
+                if (connection.identity && connection.identity.netId == exceptNetId) continue;
+                TargetHandGrabbableTrue(connection);
+            }
+        }
+        
+        [TargetRpc]
+        private void TargetHandGrabbableTrue(NetworkConnection conn)
+        {
+            _hvrGrabbable.enabled = false;
         }
         
     }

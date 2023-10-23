@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using HurricaneVR.Framework.ControllerInput;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -75,6 +76,8 @@ namespace HurricaneVR.Framework.Core.Player
             {
                 DebugCalibrate();
             }
+            
+            HVRControllerEvents.Instance.RightPrimaryActivated.AddListener(Calibrate);
         }
 
         private void DebugCalibrate()

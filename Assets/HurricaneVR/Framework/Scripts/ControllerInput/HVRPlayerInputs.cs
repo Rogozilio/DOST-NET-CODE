@@ -426,7 +426,7 @@ namespace HurricaneVR.Framework.ControllerInput
                 return RightController.TrackPadDown.JustActivated;
             }
 
-            return RightController.SecondaryButtonState.JustActivated;
+            return RightController.PrimaryButtonState.JustActivated;
         }
 
         protected virtual Vector2 GetMouse(out bool mouseDown)

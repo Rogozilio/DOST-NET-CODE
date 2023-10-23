@@ -71,11 +71,15 @@ public class ItemNetwork : NetworkBehaviour
         _grabbable.Socketed.AddListener((a, b) =>
         {
             _hvrSocket = a;
-            SyncForceGrabbable(false);
+            if (!isSyncForceGrabbbale) return;
+
+            _forceGrabbable = false;
         });
         _grabbable.UnSocketed.AddListener((a, b) =>
         {
-            SyncForceGrabbable(true);
+            if (!isSyncForceGrabbbale) return;
+
+            _forceGrabbable = true;
         });
     }
 
@@ -139,11 +143,11 @@ public class ItemNetwork : NetworkBehaviour
         _grabbable.Socketed.RemoveListener((a, b) =>
         {
             _hvrSocket = a;
-            SyncForceGrabbable(false);
+            //SyncForceGrabbable(false);
         });
         _grabbable.UnSocketed.RemoveListener((a, b) =>
         {
-            SyncForceGrabbable(true);
+            //SyncForceGrabbable(true);
         });
     }
 

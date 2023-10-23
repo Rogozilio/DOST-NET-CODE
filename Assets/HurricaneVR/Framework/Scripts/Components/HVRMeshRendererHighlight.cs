@@ -14,6 +14,11 @@ namespace HurricaneVR.Framework.Components
             Renderer = GetComponent<MeshRenderer>();
 
         }
+        
+        protected override void Update()
+        {
+            transform.forward = Vector3.up;
+        }
 
         public override void Hover()
         {

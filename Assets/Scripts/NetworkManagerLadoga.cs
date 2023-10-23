@@ -19,7 +19,7 @@ public class NetworkManagerLadoga : NetworkManager
 
     public override void Start()
     {
-        NetworkClient.RegisterPrefab(backpack, SpawnBackpack,obj => Destroy(obj));
+        NetworkClient.RegisterPrefab(backpack);
         NetworkClient.UnregisterPrefab(playerPrefab);
         NetworkClient.RegisterPrefab(playerPrefab, SpawnPlayer, obj => Destroy(obj));
         base.Start();
@@ -28,16 +28,6 @@ public class NetworkManagerLadoga : NetworkManager
     private GameObject SpawnPlayer(SpawnMessage msg)
     {
         return Instantiate(msg.isLocalPlayer ? playerOnline : playerGhost, msg.position, msg.rotation);
-    }
-    
-    private GameObject SpawnBackpack(SpawnMessage msg)
-    {
-        var backpack = Instantiate(this.backpack);
-        if (!msg.isLocalPlayer)
-        {
-            backpack.GetComponent<HVRGrabbable>().enabled = false;
-        }
-        return backpack;
     }
 
     public override void OnDestroy()
